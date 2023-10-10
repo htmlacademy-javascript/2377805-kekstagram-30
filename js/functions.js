@@ -1,20 +1,37 @@
 // Функция проверки длины строки
 
-function getValidLenght(string, validLenght) {
+function isValidLenght(string, validLenght) {
   return string.length <= validLenght;
 }
+
+// Cтрока короче 20 символов
+isValidLenght('проверяемая строка', 20); // true
+// Длина строки ровно 18 символов
+isValidLenght('проверяемая строка', 18); // true
+// Строка длиннее 10 символов
+isValidLenght('проверяемая строка', 10); // false
 
 
 // Функция определения палиндрома
 
 function isPalindrom(string) {
   const updatedString = string.replaceAll(' ', '').toLowerCase();
-  let viseVersaString = '';
+  let reverseString = '';
   for (let i = updatedString.length - 1; i >= 0; i--) {
-    viseVersaString += updatedString[i];
+    reverseString += updatedString[i];
   }
-  return viseVersaString === updatedString;
+  return reverseString === updatedString;
 }
+
+// Строка является палиндромом
+isPalindrom('топот'); // true
+// Несмотря на разный регистр, тоже палиндром
+isPalindrom('ДовОд'); // true
+// Это не палиндром
+isPalindrom('Кекс'); // false
+// Это палиндром
+isPalindrom('Лёша на полке клопа нашёл '); // true
+
 
 // Функция определения палиндрома v.2
 
@@ -30,6 +47,16 @@ function isPalindrom2(string) {
   return result;
 }
 
+// Строка является палиндромом
+isPalindrom2('топот'); // true
+// Несмотря на разный регистр, тоже палиндром
+isPalindrom2('ДовОд'); // true
+// Это не палиндром
+isPalindrom2('Кекс'); // false
+// Это палиндром
+isPalindrom2('Лёша на полке клопа нашёл '); // true
+
+
 // Функция извлечения цифр из строки
 
 function getNumbers(string) {
@@ -40,8 +67,14 @@ function getNumbers(string) {
       result += parseInt(updatedString[i], 10);
     }
   }
-  if (result === '') {
-    result = NaN;
-  }
-  return result;
+  return parseInt(result, 10);
 }
+
+getNumbers('2023 год');            // 2023
+getNumbers('ECMAScript 2022');     // 2022
+getNumbers('1 кефир, 0.5 батона'); // 105
+getNumbers('агент 007');           // 7
+getNumbers('а я томат');           // NaN
+getNumbers(2023); // 2023
+getNumbers(-1);   // 1
+getNumbers(1.5);  // 15
