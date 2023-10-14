@@ -91,7 +91,9 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-const generateCommentID = createRandomIdFromRangeGenerator(1, 100000);
+// Раздел создания комментариев у фотографии
+
+const generateCommentID = createRandomIdFromRangeGenerator(1, DESCRIPTIONS_COUNT * COMMENTS_COUNT);
 const generateMessage = (quantity) => {
   let firstCommentIndex = getRandomInteger(0, MESSAGES.length - 1);
   let secondCommentIndex = getRandomInteger(0, MESSAGES.length - 1);
@@ -110,13 +112,59 @@ const createComment = () => {
     id: generateCommentID(),
     avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
     message: generateMessage(getRandomInteger(1, 2)),
-    name: NAMES[getRandomInteger(0, COMMENTS_COUNT - 1)],
+    name: NAMES[getRandomInteger(0, NAMES.length - 1)],
   };
 };
+
+// Создание массива комментариев
 
 function createCommentsArray (quantity) {
   return Array.from({length: quantity}, createComment);
 }
+
+// Функция проверки уникальности имен внутри каждого массива комментариев
+
+function checkUniqName (commentsArray) {
+  const namesArray = commentsArray.map((comment) => {return comment.name});
+  let restNameArray = NAMES.filter(value => !namesArray.includes(value));
+  for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
+    const uniqName = commentsArray[currentCommentIndex].name;
+    for (let j = currentCommentIndex + 1; j <= commentsArray.length - 1; j++) {
+      const checkedName = commentsArray[j].name;
+      if (uniqName === checkedName) {
+        commentsArray[j].name = restNameArray[0];
+        restNameArray = restNameArray.slice(1);
+      }
+    }
+  }
+  return commentsArray;
+}
+
+  // for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
+  //   let uniqName = commentsArray[currentCommentIndex].name;
+  //   commentsArray.forEach((comment) => {
+  //     if (uniqName === comment.name) {
+  //       uniqName = NAMES[getRandomInteger(0, NAMES.length - 1)]
+  //     }
+  //   });
+  // }
+  // return commentsArray;
+
+
+  // for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
+  //   let uniqName = commentsArray[currentCommentIndex].name;
+  //   const newCommentsArray = commentsArray.map((index) => {
+  //     while (index.name === uniqName) {
+  //       uniqName = NAMES[getRandomInteger(0, NAMES.length - 1)];
+  //     }
+  //   });
+  //   console.log(uniqName);
+  // }
+  // return commentsArray;
+
+
+
+// Раздел создания описания у фотографии
 
 const generatePhotoID = createRandomIdFromRangeGenerator(1, DESCRIPTIONS_COUNT);
 const generatePhotoURL = createRandomIdFromRangeGenerator(1, DESCRIPTIONS_COUNT);
@@ -127,7 +175,7 @@ const createPhotoDescription = () => {
     url: 'photos/' + generatePhotoURL() + '.jpg',
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-    comment: createCommentsArray(getRandomInteger(0, COMMENTS_COUNT)),
+    comment: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
   };
 };
 
