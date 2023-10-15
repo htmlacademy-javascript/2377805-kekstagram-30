@@ -68,7 +68,7 @@ function getRandomInteger (min, max) {
   return Math.floor(result);
 }
 
-// Функция получения элемента массива по случайному номеру
+// Функция получения случайного индекса элемента массива
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
@@ -80,7 +80,7 @@ function createRandomIdFromRangeGenerator (min, max) {
   return function () {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -104,17 +104,15 @@ const generateMessage = (quantity) => {
   if (quantity === 1) {
     return MESSAGES[firstCommentIndex];
   }
-  return MESSAGES[firstCommentIndex] + ' ' + MESSAGES[secondCommentIndex];
+  return `${MESSAGES[firstCommentIndex]} ${MESSAGES[secondCommentIndex]}`;
 };
 
-const createComment = () => {
-  return {
-    id: generateCommentID(),
-    avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
-    message: generateMessage(getRandomInteger(1, 2)),
-    name: NAMES[getRandomInteger(0, NAMES.length - 1)],
-  };
-};
+const createComment = () => ({
+  id: generateCommentID(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: generateMessage(getRandomInteger(1, 2)),
+  name: NAMES[getRandomInteger(0, NAMES.length - 1)],
+});
 
 // Создание массива комментариев
 
@@ -125,8 +123,8 @@ function createCommentsArray (quantity) {
 // Функция проверки уникальности имен внутри каждого массива комментариев
 
 function checkUniqName (commentsArray) {
-  const namesArray = commentsArray.map((comment) => {return comment.name});
-  let restNameArray = NAMES.filter(value => !namesArray.includes(value));
+  const namesArray = commentsArray.map((comment) => comment.name);
+  let restNameArray = NAMES.filter((value) => !namesArray.includes(value));
   for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
     const uniqName = commentsArray[currentCommentIndex].name;
     for (let j = currentCommentIndex + 1; j <= commentsArray.length - 1; j++) {
@@ -169,15 +167,13 @@ function checkUniqName (commentsArray) {
 const generatePhotoID = createRandomIdFromRangeGenerator(1, DESCRIPTIONS_COUNT);
 const generatePhotoURL = createRandomIdFromRangeGenerator(1, DESCRIPTIONS_COUNT);
 
-const createPhotoDescription = () => {
-  return {
-    id: generatePhotoID(),
-    url: 'photos/' + generatePhotoURL() + '.jpg',
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-    comment: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
-  };
-};
+const createPhotoDescription = () => ({
+  id: generatePhotoID(),
+  url: `photos/${generatePhotoURL()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comment: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
+});
 
 const photoDescriptions = Array.from({length: DESCRIPTIONS_COUNT}, createPhotoDescription);
 
