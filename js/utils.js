@@ -73,4 +73,19 @@ function getNumbers(value) {
   return parseInt(result, 10);
 }
 
+// Функция проверки времени окончания встречи
+
+const changeHoursToMinutes = (value) => Number((value.split(':'))[0]) * 60 + Number((value.split(':'))[1]);
+
+function checkEndMeeting(startDay, finishDay, startMeeting, meetingDuration) {
+  const startDayMinutes = changeHoursToMinutes(startDay);
+  const finishDayMinutes = changeHoursToMinutes(finishDay);
+  const startMeetingMinutes = changeHoursToMinutes(startMeeting);
+  const finishMeetingMinutes = startMeetingMinutes + meetingDuration;
+  if (finishMeetingMinutes <= finishDayMinutes && finishMeetingMinutes >= startDayMinutes) {
+    return true;
+  }
+  return false;
+}
+
 export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator};
