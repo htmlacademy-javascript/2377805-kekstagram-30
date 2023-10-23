@@ -1,12 +1,12 @@
 // Функция генерации случайного числа от min до max
 
-function getRandomInteger (min, max) {
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
-}
+};
 
 // Функция получения случайного индекса элемента массива
 
@@ -14,7 +14,7 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 
 // Функция генератор для получения массива уникальных номеров из диапазона
 
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
@@ -29,28 +29,26 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
 // Функция проверки длины строки
 
-function isValidLenght(value, validLenght) {
-  return value.length <= validLenght;
-}
+const isValidLenght = (value, validLenght) => value.length <= validLenght;
 
 // Функция определения палиндрома
 
-function isPalindrom(value) {
+const isPalindrom = (value) => {
   const updatedString = value.replaceAll(' ', '').toLowerCase();
   let reverseString = '';
   for (let i = updatedString.length - 1; i >= 0; i--) {
     reverseString += updatedString[i];
   }
   return reverseString === updatedString;
-}
+};
 
 // Функция определения палиндрома v.2
 
-function isPalindrom2(value) {
+const isPalindrom2 = (value) => {
   const updatedString = value.replaceAll(' ', '').toLowerCase();
   for (let i = 0; i < updatedString.length / 2; i++) {
     if (updatedString[i] !== updatedString[updatedString.length - (i + 1)]) {
@@ -58,11 +56,11 @@ function isPalindrom2(value) {
     }
   }
   return true;
-}
+};
 
 // Функция извлечения цифр из строки
 
-function getNumbers(value) {
+const getNumbers = (value) => {
   let result = '';
   for (let i = 0; i < value.length; i++) {
     const currentChar = parseInt(value[i], 10);
@@ -71,18 +69,18 @@ function getNumbers(value) {
     }
   }
   return parseInt(result, 10);
-}
+};
 
 // Функция проверки времени окончания встречи
 
 const timeToMinutes = (value) => Number((value.split(':'))[0]) * 60 + Number((value.split(':'))[1]);
 
-function checkEndMeeting(startDay, finishDay, startMeeting, meetingDuration) {
+const checkEndMeeting = (startDay, finishDay, startMeeting, meetingDuration) => {
   const startDayMinutes = timeToMinutes(startDay);
   const finishDayMinutes = timeToMinutes(finishDay);
   const startMeetingMinutes = timeToMinutes(startMeeting);
   const finishMeetingMinutes = startMeetingMinutes + meetingDuration;
   return finishMeetingMinutes <= finishDayMinutes && finishMeetingMinutes >= startDayMinutes;
-}
+};
 
 export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, checkEndMeeting};

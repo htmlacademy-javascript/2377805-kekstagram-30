@@ -26,13 +26,11 @@ const createComment = () => ({
 
 // Создание массива комментариев
 
-function createCommentsArray (quantity) {
-  return Array.from({length: quantity}, createComment);
-}
+const createCommentsArray = (quantity) => Array.from({length: quantity}, createComment);
 
 // Функция проверки уникальности имен внутри каждого массива комментариев
 
-function checkUniqName (commentsArray) {
+const checkUniqName = (commentsArray) => {
   const namesArray = commentsArray.map((comment) => comment.name);
   let restNameArray = NAMES.filter((value) => !namesArray.includes(value));
   for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
@@ -46,7 +44,7 @@ function checkUniqName (commentsArray) {
     }
   }
   return commentsArray;
-}
+};
 
 // Раздел создания описания у фотографии
 
