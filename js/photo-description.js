@@ -59,6 +59,6 @@ const createPhotoDescription = () => ({
   comment: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
 });
 
-const photoDescriptions = Array.from({length: DESCRIPTIONS_COUNT}, createPhotoDescription);
+const createPhotoDescriptions = () => Array.from({length: DESCRIPTIONS_COUNT}, createPhotoDescription);
 
-export {photoDescriptions};
+export {createPhotoDescriptions};
