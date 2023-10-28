@@ -1,5 +1,3 @@
-import {createPhotoDescriptions} from './photo-description.js';
-
 // Создание шаблона разметки изображения
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -8,25 +6,29 @@ const thumbnailTemplate = document.querySelector('#picture').content.querySelect
 
 const pictureList = document.querySelector('.pictures');
 
-// Создание случайного массива из свойств для миниатюр
-
-const thumbnails = createPhotoDescriptions();
-
 // Создание фрагмента миниатюры
 
 const thumbnailFragment = document.createDocumentFragment();
 
-// Создание разметки для миниатюр из массива свойств миниатюр
+// Функция создания разметки миниатюры
 
-thumbnails.forEach(({url, description, likes, comment}) => {
+const createThumbnail = ({url, description, likes, comment}) => {
   const newThumbnail = thumbnailTemplate.cloneNode(true);
   newThumbnail.querySelector('.picture__img').src = url;
   newThumbnail.querySelector('.picture__img').alt = description;
   newThumbnail.querySelector('.picture__likes').textContent = likes;
   newThumbnail.querySelector('.picture__comments').textContent = comment.length;
-  thumbnailFragment.appendChild(newThumbnail);
-});
+  return newThumbnail;
+};
 
-const createPictureList = () => pictureList.appendChild(thumbnailFragment);
+// Функция создания блока миниатюр и добавление в список
 
-createPictureList();
+const createThumbnails = (descriptions) => {
+  descriptions.forEach((description) => {
+    const newThumbnail = createThumbnail(description);
+    thumbnailFragment.appendChild(newThumbnail);
+  });
+  pictureList.appendChild(thumbnailFragment);
+};
+
+export {createThumbnails};
