@@ -1,4 +1,5 @@
-import {photoDescriptions} from './photo-description.js';
-export {checkEndMeeting} from './utils.js';
+import {createPhotoDescriptions} from './photo-description.js';
+import {createThumbnails} from './thumbnail.js';
 
-photoDescriptions;
+const photoDescriptions = createPhotoDescriptions();
+createThumbnails(photoDescriptions);
