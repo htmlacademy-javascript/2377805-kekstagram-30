@@ -1,3 +1,5 @@
+import {openBigPicture} from './full-picture.js';
+
 // Создание шаблона разметки изображения
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -12,12 +14,12 @@ const thumbnailFragment = document.createDocumentFragment();
 
 // Функция создания разметки миниатюры
 
-const createThumbnail = ({url, description, likes, comment}) => {
+const createThumbnail = ({url, description, likes, comments}) => {
   const newThumbnail = thumbnailTemplate.cloneNode(true);
   newThumbnail.querySelector('.picture__img').src = url;
   newThumbnail.querySelector('.picture__img').alt = description;
   newThumbnail.querySelector('.picture__likes').textContent = likes;
-  newThumbnail.querySelector('.picture__comments').textContent = comment.length;
+  newThumbnail.querySelector('.picture__comments').textContent = comments.length;
   return newThumbnail;
 };
 
@@ -27,8 +29,12 @@ const createThumbnails = (descriptions) => {
   descriptions.forEach((description) => {
     const newThumbnail = createThumbnail(description);
     thumbnailFragment.appendChild(newThumbnail);
+    newThumbnail.addEventListener('click', (e) => {
+      e.preventDefault();
+      openBigPicture(description);
+    });
   });
   pictureList.appendChild(thumbnailFragment);
 };
 
-export {createThumbnails, pictureList};
+export {createThumbnails};

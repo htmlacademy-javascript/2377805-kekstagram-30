@@ -1,21 +1,15 @@
-import {pictureList} from './thumbnail.js';
-import {photoDescriptions} from './photo-description.js';
+const bigPicture = document.querySelector('.big-picture'); // Блок большого изображения (ББИ)
+const bigPictureImg = document.querySelector('.big-picture__img > img'); // Фото в ББИ
+const likesCounter = bigPicture.querySelector('.likes-count'); // Счетчик лайков
+const photoCaption = bigPicture.querySelector('.social__caption'); // Описание фотографии
+const showedComments = bigPicture.querySelector('.social__comment-shown-count'); // Счетчик показанных комментариев
 
-const thumbnailsCollection = pictureList.querySelectorAll('.picture');
-const bigPicture = document.querySelector('.big-picture');
-const bigPictureImgContainer = document.querySelector('.big-picture__img');
-const bigPictureImg = bigPictureImgContainer.querySelector('img');
-const likesCounter = bigPicture.querySelector('.likes-count');
-const showedComments = bigPicture.querySelector('.social__comment-shown-count');
-const photoCaption = bigPicture.querySelector('.social__caption');
+const totalComments = bigPicture.querySelector('.social__comment-total-count'); // Счетчик всего комментариев
+const commentsList = bigPicture.querySelector('.social__comments'); // Блок комментариев
+const commentTemplate = commentsList.querySelector('.social__comment'); // Шаблон комментария
+const buttonClose = bigPicture.querySelector('.big-picture__cancel'); // Кнопка закрыть
 
-const totalComments = bigPicture.querySelector('.social__comment-total-count');
-const photoComments = photoDescriptions.map((value) => value.comment);
-console.log(photoComments)
-const commentsList = bigPicture.querySelector('.social__comments');
-const commentTemplate = commentsList.querySelector('.social__comment');
-
-const buttonClose = bigPicture.querySelector('.big-picture__cancel');
+// Создание списка комментариев
 
 const createCommentsList = (comments) => {
   comments.forEach (({avatar, name, message}) => {
@@ -27,26 +21,49 @@ const createCommentsList = (comments) => {
   });
 };
 
-const openBigPicture = (miniPhotos) => {
+// Функция при открытии большого изображения
 
-  miniPhotos.forEach((miniphoto, index) => {
-    console.log(miniphoto);
-    miniphoto.addEventListener('click', () => {
-      bigPicture.classList.remove('hidden');
-      commentsList.innerHTML = '';
-      bigPictureImg.src = miniphoto.querySelector('img').src;
-      likesCounter.textContent = miniphoto.querySelector('.picture__likes').textContent;
-      totalComments.textContent = miniphoto.querySelector('.picture__comments').textContent;
-      // как показать количество показанных комментариев, что это за величина вообще???
-      photoCaption.textContent = miniphoto.querySelector('img').alt;
-      createCommentsList(photoComments[index]);
-    });
-  });
+const openBigPicture = (miniphoto) => {
+  commentsList.innerHTML = '';
+  bigPicture.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  bigPictureImg.src = miniphoto.url;
+  likesCounter.textContent = miniphoto.likes;
+  showedComments.textContent = 5;
+  totalComments.textContent = miniphoto.comments.length;
+  photoCaption.textContent = miniphoto.description;
+  createCommentsList(miniphoto.comments);
+
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  // Для будущих разделов это удалить
+  // bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  // bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
-buttonClose.addEventListener('click', () => {
+// Функция закрытия большого изображения
+
+const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  commentsList.innerHTML = '';
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+};
+
+// Проверка если клавиша ESC нажата
+
+const onDocumentKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
+
+// Обработчик события нажатия на кнопку закрыть
+
+buttonClose.addEventListener('click', () => {
+  closeBigPicture();
 });
 
-openBigPicture(thumbnailsCollection);
-
+export {openBigPicture};

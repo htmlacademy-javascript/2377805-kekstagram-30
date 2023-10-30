@@ -31,7 +31,7 @@ const createCommentsArray = (quantity) => Array.from({length: quantity}, createC
 // Функция проверки уникальности имен внутри каждого массива комментариев
 
 const checkUniqName = (commentsArray) => {
-  const namesArray = commentsArray.map((comment) => comment.name);
+  const namesArray = commentsArray.map((comments) => comments.name);
   let restNameArray = NAMES.filter((value) => !namesArray.includes(value));
   for (let currentCommentIndex = 0; currentCommentIndex < commentsArray.length; currentCommentIndex++) {
     const uniqName = commentsArray[currentCommentIndex].name;
@@ -56,7 +56,7 @@ const createPhotoDescription = () => ({
   url: `photos/${generatePhotoURL()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-  comment: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
+  comments: checkUniqName(createCommentsArray(getRandomInteger(0, COMMENTS_COUNT))),
 });
 
 const createPhotoDescriptions = () => Array.from({length: DESCRIPTIONS_COUNT}, createPhotoDescription);
