@@ -74,6 +74,7 @@ const openBigPicture = (miniphoto) => {
   checkMaxComments();
 
   document.addEventListener('keydown', onDocumentKeydown);
+  bigPicture.addEventListener('click', onFreeZone);
 };
 
 // Функция закрытия большого изображения
@@ -86,6 +87,7 @@ const closeBigPicture = () => {
   commentsList.innerHTML = '';
 
   document.removeEventListener('keydown', onDocumentKeydown);
+  bigPicture.removeEventListener('click', onFreeZone);
 };
 
 // Проверка если клавиша ESC нажата
@@ -102,5 +104,14 @@ const onDocumentKeydown = (evt) => {
 buttonClose.addEventListener('click', () => {
   closeBigPicture();
 });
+
+// Проверка нажатия поля вне большого изображения
+
+const onFreeZone = (evt) => {
+  if (!evt.target.closest('.big-picture__preview')) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
 
 export {openBigPicture};
