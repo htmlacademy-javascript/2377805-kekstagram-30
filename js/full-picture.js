@@ -14,6 +14,7 @@ const buttonClose = bigPicture.querySelector('.big-picture__cancel'); // Кно�
 let showedCommentsCounter = 0;
 
 const createCommentsList = (comments) => {
+  showedCommentsCounter = 0;
   let counter = 0;
   comments.forEach (({avatar, name, message}) => {
     const newComment = commentTemplate.cloneNode(true);
@@ -60,6 +61,65 @@ const showMoreComments = () => {
 
 buttonMoreComments.addEventListener('click', showMoreComments);
 
+
+/* Вариант номер два для функционала загрузки комментариев, очень запутанный с точки зрения написания функции,
+но зато добавляет и удаляет обработчик нажатия на кнопку "загрузить еще"
+и не отрисовывает сразу весь список комментариев */
+
+// const createComment = ({avatar, name, message}) => {
+//   const comment = commentTemplate.cloneNode(true);
+//   comment.querySelector('.social__picture').src = avatar;
+//   comment.querySelector('.social__picture').alt = name;
+//   comment.querySelector('.social__text').textContent = message;
+//   return comment;
+// };
+
+// const createCommentsList = (comments) => {
+//   let showedCommentsCounter = 0;
+//   showedCommentsCounter += 5;
+//   const fragment = document.createDocumentFragment();
+
+//   const showMoreComments = () => { //определение колбэка для клика на "загрузить еще"
+//     commentsList.innerHTML = '';
+//     showedCommentsCounter += 5;
+//     if (showedCommentsCounter < comments.length) {
+//       showedComments.textContent = showedCommentsCounter;
+//       comments.slice(0,showedCommentsCounter).forEach((item) => {
+//         const newComment = createComment(item);
+//         fragment.append(newComment);
+//       });
+//       commentsList.append(fragment);
+//     } else {
+//       showedComments.textContent = comments.length;
+//       buttonMoreComments.classList.add('hidden');
+//       comments.slice(0,comments.length).forEach((item) => {
+//         const newComment = createComment(item);
+//         fragment.append(newComment);
+//       });
+//       commentsList.append(fragment);
+//       buttonMoreComments.removeEventListener('click', showMoreComments);
+//     }
+//   };
+
+//   if (showedCommentsCounter >= comments.length) {
+//     buttonMoreComments.classList.add('hidden');
+//     showedComments.textContent = comments.length;
+//     comments.slice(0,comments.length).forEach((item) => {
+//       const newComment = createComment(item);
+//       fragment.append(newComment);
+//     });
+//     commentsList.append(fragment);
+//   } else {
+//     buttonMoreComments.addEventListener('click', showMoreComments);
+//     showedComments.textContent = showedCommentsCounter;
+//     comments.slice(0,showedCommentsCounter).forEach((item) => {
+//       const newComment = createComment(item);
+//       fragment.append(newComment);
+//     });
+//     commentsList.append(fragment);
+//   }
+// };
+
 // Функция при открытии большого изображения
 
 const openBigPicture = (miniphoto) => {
@@ -71,7 +131,7 @@ const openBigPicture = (miniphoto) => {
   totalComments.textContent = miniphoto.comments.length;
   photoCaption.textContent = miniphoto.description;
   createCommentsList(miniphoto.comments);
-  checkMaxComments();
+  checkMaxComments(); // для варианта 2 это не требуется
 
   document.addEventListener('keydown', onDocumentKeydown);
   bigPicture.addEventListener('click', onFreeZone);
@@ -80,7 +140,6 @@ const openBigPicture = (miniphoto) => {
 // Функция закрытия большого изображения
 
 const closeBigPicture = () => {
-  showedCommentsCounter = 0;
   buttonMoreComments.classList.remove('hidden');
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -92,12 +151,12 @@ const closeBigPicture = () => {
 
 // Проверка если клавиша ESC нажата
 
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
 
 // Обработчик события нажатия на кнопку закрыть
 
@@ -107,11 +166,11 @@ buttonClose.addEventListener('click', () => {
 
 // Проверка нажатия поля вне большого изображения
 
-const onFreeZone = (evt) => {
+function onFreeZone (evt) {
   if (!evt.target.closest('.big-picture__preview')) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
 
 export {openBigPicture};
