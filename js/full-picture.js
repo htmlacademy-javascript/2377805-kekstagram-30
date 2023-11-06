@@ -173,4 +173,10 @@ function onFreeZone (evt) {
   }
 }
 
+// Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
+
+bigPicture.querySelector('.social__footer-text').addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+
 export {openBigPicture};
