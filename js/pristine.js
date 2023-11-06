@@ -107,6 +107,8 @@ const buttonSubmit = uploadForm.querySelector('.img-upload__submit');
 const isFormValid = () => {
   if (!pristine.validate()) {
     buttonSubmit.disabled = true;
+  } else {
+    buttonSubmit.disabled = false;
   }
 };
 
