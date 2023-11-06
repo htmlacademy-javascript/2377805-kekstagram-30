@@ -37,4 +37,4 @@ const createThumbnails = (descriptions) => {
   pictureList.appendChild(thumbnailFragment);
 };
 
-export {createThumbnails};
+export {createThumbnails, pictureList};
