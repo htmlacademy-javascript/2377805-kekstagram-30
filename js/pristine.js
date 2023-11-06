@@ -9,6 +9,7 @@ const pristine = new Pristine(
   {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
+    errorTextClass: 'img-upload__field-wrapper--error',
   },
   false
 );
@@ -101,7 +102,13 @@ pristine.addValidator(
 
 // Функция вызова валидации
 
-const isFormValid = () => pristine.validate();
+const buttonSubmit = uploadForm.querySelector('.img-upload__submit');
+
+const isFormValid = () => {
+  if (!pristine.validate()) {
+    buttonSubmit.disabled = true;
+  }
+};
 
 // Функция сброса валидации
 
