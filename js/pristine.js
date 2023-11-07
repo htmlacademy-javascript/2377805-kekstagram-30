@@ -16,31 +16,23 @@ const pristine = new Pristine(
 
 // Регулярное выражение хештэга
 
-const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+const REGEXP_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
+
+// Функция преобразования данных из поля хештэгов в массив хэштегов (удаление пробелов, удаление пустых значений)
+
+const getHashtagsArray = (hashtags) => hashtags.trim().split(' ').filter((value) => value !== '');
 
 // Проверка хештега на соответствие регулярному выражению
 
 const validateHashtag = (hashtags) => {
-  let isValid = true;
-  const hashtagsArray = hashtags
-    .trim()
-    .split(' ')
-    .filter((value) => value !== '');
-  hashtagsArray.forEach((value) => {
-    if (!hashtag.test(value)) {
-      isValid = false;
-    }
-  });
-  return isValid;
+  const hashtagsArray = getHashtagsArray(hashtags);
+  return hashtagsArray.every((value) => REGEXP_HASHTAG.test(value));
 };
 
 // Проверка количества хештегов
 
 const maxQuantityHashtags = (hashtags) => {
-  const hashtagsArray = hashtags
-    .trim()
-    .split(' ')
-    .filter((value) => value !== '');
+  const hashtagsArray = getHashtagsArray(hashtags);
   if (hashtagsArray.length > 5) {
     return false;
   }
@@ -50,18 +42,9 @@ const maxQuantityHashtags = (hashtags) => {
 // Проверка повторяющихся хештегов
 
 const repeatHashtags = (hashtags) => {
-  const hashtagsArray = hashtags
-    .trim()
-    .split(' ')
-    .filter((value) => value !== '');
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    for (let j = i + 1; j < hashtagsArray.length; j++) {
-      if (hashtagsArray[i] === hashtagsArray[j]) {
-        return false;
-      }
-    }
-  }
-  return true;
+  const hashtagsArray = getHashtagsArray(hashtags);
+  const set = new Set(hashtagsArray);
+  return set.size === hashtagsArray.length;
 };
 
 // Добавление функций проверок в валидатор хэштегов
@@ -79,7 +62,6 @@ pristine.addValidator(
   'Количество хештегов не должно превышать 5',
   2
 );
-
 
 pristine.addValidator(
   hashtagElements,
