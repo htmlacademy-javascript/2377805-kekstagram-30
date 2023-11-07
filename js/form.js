@@ -1,5 +1,6 @@
 import {pictureList} from './thumbnail.js';
 import {isFormValid, resetFormValid, hashtagElements, commentElement} from './pristine.js';
+import {changeZoomValue, fieldZoom} from './zoom.js';
 
 const fieldUploadImages = pictureList.querySelector('.img-upload');
 const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
@@ -19,6 +20,7 @@ imageUpload.addEventListener('change', (evt) => {
   buttonClose.addEventListener('click', closeUploadModal, {once: true});
   hashtagElements.addEventListener('blur', isFormValid);
   commentElement.addEventListener('blur', isFormValid);
+  fieldZoom.addEventListener('click', changeZoomValue);
 });
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
@@ -42,6 +44,7 @@ function closeUploadModal () {
   document.removeEventListener('keydown', onDocumentKeydown);
   hashtagElements.removeEventListener('blur', isFormValid);
   commentElement.removeEventListener('blur', isFormValid);
+  fieldZoom.removeEventListener('click', changeZoomValue);
 }
 
 // Проверка если клавиша ESC нажата
