@@ -1,62 +1,11 @@
 import {pictureList} from './thumbnail.js';
+import {EFFECTS} from './const.js';
 
 const sliderElementContainer = pictureList.querySelector('.img-upload__effect-level');
 const sliderElement = pictureList.querySelector('.effect-level__slider');
 const valueElement = pictureList.querySelector('.effect-level__value');
 const effectsList = pictureList.querySelector('.effects__list');
 const imagePreview = pictureList.querySelector('.img-upload__preview > img');
-
-// Создание массива с исходными данными
-const EFFECTS = [
-  {
-    name: 'none',
-    style: '',
-    unit: '',
-    min: 0,
-    max: 1,
-    step: 0.1,
-  },
-  {
-    name: 'chrome',
-    style: 'grayscale',
-    unit: '',
-    min: 0,
-    max: 1,
-    step: 0.1,
-  },
-  {
-    name: 'sepia',
-    style: 'sepia',
-    unit: '',
-    min: 0,
-    max: 1,
-    step: 0.1,
-  },
-  {
-    name: 'marvin',
-    style: 'invert',
-    unit: '%',
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  {
-    name: 'phobos',
-    style: 'blur',
-    unit: 'px',
-    min: 0,
-    max: 3,
-    step: 0.1,
-  },
-  {
-    name: 'heat',
-    style: 'brightness',
-    unit: '',
-    min: 1,
-    max: 3,
-    step: 0.1,
-  },
-];
 
 let currentEffect = EFFECTS[0];
 
@@ -87,20 +36,6 @@ const createSlider = () => {
       max: 1,
     },
     connect: 'lower',
-    format: {
-      to: function (value) {
-        if (Number.isInteger(value)) {
-          return value.toFixed(0);
-        }
-        return value.toFixed(1);
-      },
-      from: function (value) {
-        if (Number.isInteger(value)) {
-          return parseInt(value, 10).toFixed(0);
-        }
-        return parseFloat(value).toFixed(1);
-      },
-    }
   });
   hideSlider();
 };
