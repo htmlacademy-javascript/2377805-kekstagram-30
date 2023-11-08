@@ -10,14 +10,14 @@ let zoomValue = parseInt(zoomPercent.value.replace('%', ''), 10);
 
 // Функция при нажатии на кнопки зума
 
-const changeZoomValue = (evt) => {
+const onZoomChange = (evt) => {
   evt.preventDefault();
   if (evt.target === btnBigger) {
     if (zoomValue < 100) {
       zoomValue += 25;
     }
   } else if (evt.target === btnSmaller) {
-    if (zoomValue > 0) {
+    if (zoomValue > 25) {
       zoomValue -= 25;
     }
   }
@@ -25,4 +25,10 @@ const changeZoomValue = (evt) => {
   imagePreview.style.transform = `scale(${zoomValue / 100})`;
 };
 
-export {changeZoomValue, fieldZoom};
+const resetScale = () => {
+  imagePreview.style.transform = `scale(${1})`;
+  zoomPercent.value = '100%';
+  zoomValue = 100;
+};
+
+export {onZoomChange, resetScale, fieldZoom};

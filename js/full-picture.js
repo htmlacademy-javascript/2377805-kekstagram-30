@@ -42,7 +42,7 @@ const checkMaxComments = () => {
 
 // Функция показа больше комментариев
 
-const showMoreComments = () => {
+const onMoreCommentsShow = () => {
   const hiddenComments = commentsList.querySelectorAll('.hidden');
 
   let counter = 0;
@@ -59,7 +59,7 @@ const showMoreComments = () => {
 
 // Обработчик событий показать больше комментариев
 
-buttonMoreComments.addEventListener('click', showMoreComments);
+buttonMoreComments.addEventListener('click', onMoreCommentsShow);
 
 
 /* Вариант номер два для функционала загрузки комментариев, очень запутанный с точки зрения написания функции,
@@ -79,7 +79,7 @@ buttonMoreComments.addEventListener('click', showMoreComments);
 //   showedCommentsCounter += 5;
 //   const fragment = document.createDocumentFragment();
 
-//   const showMoreComments = () => { //определение колбэка для клика на "загрузить еще"
+//   const onMoreCommentsShow = () => { //определение колбэка для клика на "загрузить еще"
 //     commentsList.innerHTML = '';
 //     showedCommentsCounter += 5;
 //     if (showedCommentsCounter < comments.length) {
@@ -97,7 +97,7 @@ buttonMoreComments.addEventListener('click', showMoreComments);
 //         fragment.append(newComment);
 //       });
 //       commentsList.append(fragment);
-//       buttonMoreComments.removeEventListener('click', showMoreComments);
+//       buttonMoreComments.removeEventListener('click', onMoreCommentsShow);
 //     }
 //   };
 
@@ -110,7 +110,7 @@ buttonMoreComments.addEventListener('click', showMoreComments);
 //     });
 //     commentsList.append(fragment);
 //   } else {
-//     buttonMoreComments.addEventListener('click', showMoreComments);
+//     buttonMoreComments.addEventListener('click', onMoreCommentsShow);
 //     showedComments.textContent = showedCommentsCounter;
 //     comments.slice(0,showedCommentsCounter).forEach((item) => {
 //       const newComment = createComment(item);

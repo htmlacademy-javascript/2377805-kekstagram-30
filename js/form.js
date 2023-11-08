@@ -1,6 +1,6 @@
 import {pictureList} from './thumbnail.js';
-import {isFormValid, resetFormValid, hashtagElements, commentElement} from './pristine.js';
-import {changeZoomValue, fieldZoom} from './zoom.js';
+import {onFormValidate, resetFormValid, hashtagElements, commentElement} from './pristine.js';
+import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
 
 const fieldUploadImages = pictureList.querySelector('.img-upload');
 const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
@@ -17,10 +17,10 @@ imageUpload.addEventListener('change', (evt) => {
   fieldCreateDescription.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-  buttonClose.addEventListener('click', closeUploadModal, {once: true});
-  hashtagElements.addEventListener('blur', isFormValid);
-  commentElement.addEventListener('blur', isFormValid);
-  fieldZoom.addEventListener('click', changeZoomValue);
+  buttonClose.addEventListener('click', onUploadModalClose, {once: true});
+  hashtagElements.addEventListener('blur', onFormValidate);
+  commentElement.addEventListener('blur', onFormValidate);
+  fieldZoom.addEventListener('click', onZoomChange);
 });
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
@@ -35,16 +35,17 @@ imageText.addEventListener('keydown', (evt) => {
 
 // Функция закрытия большого изображения
 
-function closeUploadModal () {
+function onUploadModalClose () {
   imageUpload.value = '';
   fieldCreateDescription.classList.add('hidden');
   document.body.classList.remove('modal-open');
   resetFormValid();
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  hashtagElements.removeEventListener('blur', isFormValid);
-  commentElement.removeEventListener('blur', isFormValid);
-  fieldZoom.removeEventListener('click', changeZoomValue);
+  hashtagElements.removeEventListener('blur', onFormValidate);
+  commentElement.removeEventListener('blur', onFormValidate);
+  fieldZoom.removeEventListener('click', onZoomChange);
+  resetScale();
 }
 
 // Проверка если клавиша ESC нажата
