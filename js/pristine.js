@@ -1,3 +1,11 @@
+const MAX_HASTAGS = 5; // Максимально количество хэштегов
+const REGEXP_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i; // Регулярное выражение хештэга
+const TEXT_ERROR = {
+  invalidHashtag: 'Длина хештега должна быть от 1 до 20 символов и начинаться с символа #',
+  unvalidQuantityHashtags: `Количество хештегов не должно превышать ${MAX_HASTAGS}`,
+  hashtagsNotUnique: 'Хештеги не должны повторяться',
+};
+
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagElements = uploadForm.querySelector('.text__hashtags');
 const commentElement = uploadForm.querySelector('.text__description');
@@ -14,34 +22,27 @@ const pristine = new Pristine(
   false
 );
 
-// Регулярное выражение хештэга
-
-const REGEXP_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
-
 // Функция преобразования данных из поля хештэгов в массив хэштегов (удаление пробелов, удаление пустых значений)
 
 const getHashtagsArray = (hashtags) => hashtags.trim().split(' ').filter((value) => value !== '');
 
 // Проверка хештега на соответствие регулярному выражению
 
-const validateHashtag = (hashtags) => {
+const isHashtagValid = (hashtags) => {
   const hashtagsArray = getHashtagsArray(hashtags);
   return hashtagsArray.every((value) => REGEXP_HASHTAG.test(value));
 };
 
 // Проверка количества хештегов
 
-const maxQuantityHashtags = (hashtags) => {
+const isValidHashtagsCount = (hashtags) => {
   const hashtagsArray = getHashtagsArray(hashtags);
-  if (hashtagsArray.length > 5) {
-    return false;
-  }
-  return true;
+  return hashtagsArray.length <= MAX_HASTAGS;
 };
 
 // Проверка повторяющихся хештегов
 
-const repeatHashtags = (hashtags) => {
+const isUniqHashtags = (hashtags) => {
   const hashtagsArray = getHashtagsArray(hashtags);
   const set = new Set(hashtagsArray);
   return set.size === hashtagsArray.length;
@@ -51,22 +52,22 @@ const repeatHashtags = (hashtags) => {
 
 pristine.addValidator(
   hashtagElements,
-  validateHashtag,
-  'Длина хештега должна быть от 1 до 20 символов и начинаться с символа #',
+  isHashtagValid,
+  TEXT_ERROR.invalidHashtag,
   1
 );
 
 pristine.addValidator(
   hashtagElements,
-  maxQuantityHashtags,
-  'Количество хештегов не должно превышать 5',
+  isValidHashtagsCount,
+  TEXT_ERROR.unvalidQuantityHashtags,
   2
 );
 
 pristine.addValidator(
   hashtagElements,
-  repeatHashtags,
-  'Хештеги не должны повторяться',
+  isUniqHashtags,
+  TEXT_ERROR.hashtagsNotUnique,
   3
 );
 
@@ -86,16 +87,12 @@ pristine.addValidator(
 
 const buttonSubmit = uploadForm.querySelector('.img-upload__submit');
 
-const isFormValid = () => {
-  if (!pristine.validate()) {
-    buttonSubmit.disabled = true;
-  } else {
-    buttonSubmit.disabled = false;
-  }
+const onFormValidate = () => {
+  buttonSubmit.disabled = !pristine.validate();
 };
 
 // Функция сброса валидации
 
 const resetFormValid = () => pristine.reset();
 
-export {isFormValid, resetFormValid, hashtagElements, commentElement};
+export {onFormValidate, resetFormValid, hashtagElements, commentElement};

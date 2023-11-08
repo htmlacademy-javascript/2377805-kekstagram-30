@@ -56,4 +56,57 @@ const MIN_LIKES = 15; // Минимальное количество лайко�
 const MAX_LIKES = 200; // Максимальное количество лайков на фото
 const COMMENTS_COUNT = 30; // Максимальное количество комментариев на фото
 
-export {DESCRIPTIONS, MESSAGES, NAMES, DESCRIPTIONS_COUNT, MIN_LIKES, MAX_LIKES, COMMENTS_COUNT};
+// Массив с исходными данными эффектов для создания слайдера
+
+const EFFECTS = [
+  {
+    name: 'none',
+    style: '',
+    unit: '',
+    min: 0,
+    max: 1,
+    step: 0.1,
+  },
+  {
+    name: 'chrome',
+    style: 'grayscale',
+    unit: '',
+    min: 0,
+    max: 1,
+    step: 0.1,
+  },
+  {
+    name: 'sepia',
+    style: 'sepia',
+    unit: '',
+    min: 0,
+    max: 1,
+    step: 0.1,
+  },
+  {
+    name: 'marvin',
+    style: 'invert',
+    unit: '%',
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  {
+    name: 'phobos',
+    style: 'blur',
+    unit: 'px',
+    min: 0,
+    max: 3,
+    step: 0.1,
+  },
+  {
+    name: 'heat',
+    style: 'brightness',
+    unit: '',
+    min: 1,
+    max: 3,
+    step: 0.1,
+  },
+];
+
+export {DESCRIPTIONS, MESSAGES, NAMES, DESCRIPTIONS_COUNT, MIN_LIKES, MAX_LIKES, COMMENTS_COUNT, EFFECTS};
