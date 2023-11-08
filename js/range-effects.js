@@ -1,7 +1,5 @@
 import {pictureList} from './thumbnail.js';
 
-const buttonClose = pictureList.querySelector('.img-upload__cancel');
-
 const sliderElementContainer = pictureList.querySelector('.img-upload__effect-level');
 const sliderElement = pictureList.querySelector('.effect-level__slider');
 const valueElement = pictureList.querySelector('.effect-level__value');
@@ -80,13 +78,13 @@ const isDefaultEffect = () => currentEffect.name === EFFECTS[0].name;
 
 // Функция cоздание слайдера
 
-const createSlider = ({step, min, max}) => {
+const createSlider = () => {
   noUiSlider.create(sliderElement, {
-    start: max,
-    step,
+    start: 1,
+    step: 0.1,
     range: {
-      min,
-      max,
+      min: 0,
+      max: 1,
     },
     connect: 'lower',
     format: {
@@ -106,8 +104,6 @@ const createSlider = ({step, min, max}) => {
   });
   hideSlider();
 };
-
-createSlider(currentEffect);
 
 // Функция обновления слайдера
 
@@ -138,6 +134,7 @@ const onEffectClick = (evt) => {
     updateSlider(currentEffect);
   } else {
     resetSlider();
+    hideSlider();
   }
 };
 
@@ -159,17 +156,19 @@ const onUpdateSliderValue = () => {
 
 // Функция сброса слайдера
 
-function resetSlider () {               // Почему не получается импортировать эту функцию?
+function resetSlider () {
+  sliderElement.noUiSlider.reset();
   imagePreview.style.filter = null;
-  hideSlider();
 }
 
-buttonClose.addEventListener('click', resetSlider);
+// Функция удаления слайдера
 
-// Обработчик события изменения положения слайдера
-
-sliderElement.noUiSlider.on('update', onUpdateSliderValue);
+function deleteSlider () {
+  sliderElement.noUiSlider.destroy();
+}
 
 // Обработчик события нажатия на эффект
 
 effectsList.addEventListener('click', onEffectClick);
+
+export {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick};

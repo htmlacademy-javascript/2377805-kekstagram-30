@@ -1,6 +1,7 @@
 import {pictureList} from './thumbnail.js';
 import {onFormValidate, resetFormValid, hashtagElements, commentElement} from './pristine.js';
 import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
+import {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick} from './range-effects.js';
 
 const fieldUploadImages = pictureList.querySelector('.img-upload');
 const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
@@ -21,6 +22,9 @@ imageUpload.addEventListener('change', (evt) => {
   hashtagElements.addEventListener('blur', onFormValidate);
   commentElement.addEventListener('blur', onFormValidate);
   fieldZoom.addEventListener('click', onZoomChange);
+  createSlider();
+  sliderElement.noUiSlider.on('update', onUpdateSliderValue); // Обработчик события изменения положения слайдера
+  effectsList.addEventListener('click', onEffectClick);
 });
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
@@ -46,6 +50,8 @@ function onUploadModalClose () {
   commentElement.removeEventListener('blur', onFormValidate);
   fieldZoom.removeEventListener('click', onZoomChange);
   resetScale();
+  deleteSlider();
+  effectsList.removeEventListener('click', onEffectClick);
 }
 
 // Проверка если клавиша ESC нажата
