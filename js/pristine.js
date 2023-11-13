@@ -43,7 +43,7 @@ const isValidHashtagsCount = (hashtags) => {
 // Проверка повторяющихся хештегов
 
 const isUniqHashtags = (hashtags) => {
-  const hashtagsArray = getHashtagsArray(hashtags);
+  const hashtagsArray = getHashtagsArray(hashtags).map((value) => value.toLowerCase());
   const set = new Set(hashtagsArray);
   return set.size === hashtagsArray.length;
 };
@@ -95,4 +95,4 @@ const onFormValidate = () => {
 
 const resetFormValid = () => pristine.reset();
 
-export {onFormValidate, resetFormValid, hashtagElements, commentElement};
+export {onFormValidate, resetFormValid, hashtagElements, commentElement, pristine};

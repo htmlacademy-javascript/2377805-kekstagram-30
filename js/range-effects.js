@@ -36,6 +36,17 @@ const createSlider = () => {
       max: 1,
     },
     connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
   });
   hideSlider();
 };
@@ -96,14 +107,12 @@ function resetSlider () {
   imagePreview.style.filter = null;
 }
 
-// Функция удаления слайдера
+// Функция переключения на оригинал
 
-function deleteSlider () {
-  sliderElement.noUiSlider.destroy();
-}
+const changeEffectToDefault = () => {
+  resetSlider();
+  hideSlider();
+  currentEffect = EFFECTS[0];
+};
 
-// Обработчик события нажатия на эффект
-
-effectsList.addEventListener('click', onEffectClick);
-
-export {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick};
+export {createSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault};

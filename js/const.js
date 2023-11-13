@@ -109,4 +109,29 @@ const EFFECTS = [
   },
 ];
 
-export {DESCRIPTIONS, MESSAGES, NAMES, DESCRIPTIONS_COUNT, MIN_LIKES, MAX_LIKES, COMMENTS_COUNT, EFFECTS};
+// Базовый URL
+
+const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
+
+// Ручка
+
+const ROUTE = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+
+// Метод
+
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
+// Текст ошибки
+
+const ErrorText = {
+  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
+};
+
+export {DESCRIPTIONS, MESSAGES, NAMES, DESCRIPTIONS_COUNT, MIN_LIKES, MAX_LIKES, COMMENTS_COUNT, EFFECTS, BASE_URL, ROUTE, Method, ErrorText};
