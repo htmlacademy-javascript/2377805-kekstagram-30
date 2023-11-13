@@ -1,4 +1,4 @@
-import {ErrorText} from './api.js';
+import {ErrorText} from './const.js';
 
 // Функция генерации случайного числа от min до max
 

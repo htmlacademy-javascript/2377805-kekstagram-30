@@ -107,12 +107,6 @@ function resetSlider () {
   imagePreview.style.filter = null;
 }
 
-// Функция удаления слайдера
-
-function deleteSlider () {
-  sliderElement.noUiSlider.destroy();
-}
-
 // Функция переключения на оригинал
 
 const changeEffectToDefault = () => {
@@ -121,4 +115,4 @@ const changeEffectToDefault = () => {
   currentEffect = EFFECTS[0];
 };
 
-export {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault};
+export {createSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault};

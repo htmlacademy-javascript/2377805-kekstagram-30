@@ -26,8 +26,6 @@ imageUpload.addEventListener('change', (evt) => {
   effectsList.addEventListener('click', onEffectClick);
   hashtagElements.addEventListener('blur', onFormValidate);
   commentElement.addEventListener('blur', onFormValidate);
-
-
 });
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей

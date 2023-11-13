@@ -16,22 +16,43 @@ const SubmitButtonText = {
 
 // Функция при отправке формы
 
-const sendForm = async (formElement) => {
+const sendForm = (formElement) => {
   if (!pristine.validate()) {
     return;
   }
+  blockSubmitButton();
 
-  try {
-    blockSubmitButton();
-    await sendFormData(new FormData(formElement));
-    onUploadModalClose();
-    unblockSubmitButton();
-    showSuccess();
-  } catch {
-    unblockSubmitButton();
-    showError();
-  }
+  const formData = new FormData(formElement);
+  sendFormData(formData)
+    .then(() => {
+      onUploadModalClose();
+      unblockSubmitButton();
+      showSuccess();
+    })
+    .catch(() => {
+      unblockSubmitButton();
+      showError();
+    });
 };
+
+// Альтернативная функция через async и await
+
+// const sendForm = async (formElement) => {
+//   if (!pristine.validate()) {
+//     return;
+//   }
+
+//   try {
+//     blockSubmitButton();
+//     await sendFormData(new FormData(formElement));
+//     onUploadModalClose();
+//     unblockSubmitButton();
+//     showSuccess();
+//   } catch {
+//     unblockSubmitButton();
+//     showError();
+//   }
+// };
 
 // Функция обработчик события отправки формы
 
@@ -43,27 +64,6 @@ const onFormSubmit = (evt) => {
 // Обработчик события отправки формы
 
 imageForm.addEventListener('submit', onFormSubmit);
-
-// const setUserFormSubmit = (onSuccess) => {
-//   imageForm.addEventListener('submit', (evt) => {
-//     evt.preventDefault();
-
-//     const isValid = pristine.validate();
-//     if (isValid) {
-//       blockSubmitButton();
-//       const formData = new FormData(evt.target);
-//       sendFormData(formData)
-//         .then(() => {
-//           onSuccess();
-//           showSuccess();
-//         })
-//         .catch(() => {
-//           showAlert();
-//         })
-//         .finally(unblockSubmitButton);
-//     }
-//   });
-// };
 
 // Функция показа успешного сообщения
 
