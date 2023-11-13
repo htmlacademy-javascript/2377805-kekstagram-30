@@ -36,6 +36,17 @@ const createSlider = () => {
       max: 1,
     },
     connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
   });
   hideSlider();
 };
@@ -102,8 +113,12 @@ function deleteSlider () {
   sliderElement.noUiSlider.destroy();
 }
 
-// Обработчик события нажатия на эффект
+// Функция переключения на оригинал
 
-effectsList.addEventListener('click', onEffectClick);
+const changeEffectToDefault = () => {
+  resetSlider();
+  hideSlider();
+  currentEffect = EFFECTS[0];
+};
 
-export {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick};
+export {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault};

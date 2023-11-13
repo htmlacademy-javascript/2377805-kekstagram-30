@@ -1,64 +1,136 @@
-import {pictureList} from './thumbnail.js';
-import {onFormValidate, resetFormValid, hashtagElements, commentElement} from './pristine.js';
-import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
-import {createSlider, deleteSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick} from './range-effects.js';
+import {pristine} from './pristine.js';
+import {sendFormData} from './api.js';
+import {onUploadModalClose} from './modal.js';
 
-const fieldUploadImages = pictureList.querySelector('.img-upload');
-const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
-const fieldCreateDescription = pictureList.querySelector('.img-upload__overlay');
-// const imagePreview = pictureList.querySelector('.img-upload__preview > img');
-const buttonClose = pictureList.querySelector('.img-upload__cancel');
-const imageEffects = pictureList.querySelector('.img-upload__effects');
-const imageText = pictureList.querySelector('.img-upload__text');
 
-// Обработчик изменения в поле инпута с загрузкой нового изображения
+const imageForm = document.querySelector('.img-upload__form');
 
-imageUpload.addEventListener('change', (evt) => {
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+
+const buttonSubmit = imageForm.querySelector('.img-upload__submit');
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Отправляю...',
+};
+
+// Функция при отправке формы
+
+const sendForm = async (formElement) => {
+  if (!pristine.validate()) {
+    return;
+  }
+
+  try {
+    blockSubmitButton();
+    await sendFormData(new FormData(formElement));
+    onUploadModalClose();
+    unblockSubmitButton();
+    showSuccess();
+  } catch {
+    unblockSubmitButton();
+    showError();
+  }
+};
+
+// Функция обработчик события отправки формы
+
+const onFormSubmit = (evt) => {
   evt.preventDefault();
-  fieldCreateDescription.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-  buttonClose.addEventListener('click', onUploadModalClose, {once: true});
-  hashtagElements.addEventListener('blur', onFormValidate);
-  commentElement.addEventListener('blur', onFormValidate);
-  fieldZoom.addEventListener('click', onZoomChange);
-  createSlider();
-  sliderElement.noUiSlider.on('update', onUpdateSliderValue); // Обработчик события изменения положения слайдера
-  effectsList.addEventListener('click', onEffectClick);
-});
+  sendForm(evt.target);
+};
 
-// Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
+// Обработчик события отправки формы
 
-imageEffects.addEventListener('keydown', (evt) => {
-  evt.stopPropagation();
-});
+imageForm.addEventListener('submit', onFormSubmit);
 
-imageText.addEventListener('keydown', (evt) => {
-  evt.stopPropagation();
-});
+// const setUserFormSubmit = (onSuccess) => {
+//   imageForm.addEventListener('submit', (evt) => {
+//     evt.preventDefault();
 
-// Функция закрытия большого изображения
+//     const isValid = pristine.validate();
+//     if (isValid) {
+//       blockSubmitButton();
+//       const formData = new FormData(evt.target);
+//       sendFormData(formData)
+//         .then(() => {
+//           onSuccess();
+//           showSuccess();
+//         })
+//         .catch(() => {
+//           showAlert();
+//         })
+//         .finally(unblockSubmitButton);
+//     }
+//   });
+// };
 
-function onUploadModalClose () {
-  imageUpload.value = '';
-  fieldCreateDescription.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  resetFormValid();
+// Функция показа успешного сообщения
 
-  document.removeEventListener('keydown', onDocumentKeydown);
-  hashtagElements.removeEventListener('blur', onFormValidate);
-  commentElement.removeEventListener('blur', onFormValidate);
-  fieldZoom.removeEventListener('click', onZoomChange);
-  resetScale();
-  deleteSlider();
-  effectsList.removeEventListener('click', onEffectClick);
+function showSuccess () {
+  showMessage(successMessageTemplate, '.success__button');
 }
 
-// Проверка если клавиша ESC нажата
+// Функция показа сообщения с ошибкой
 
-function onDocumentKeydown (evt) {
+function showError () {
+  showMessage(errorMessageTemplate, '.error__button');
+}
+
+// Функция показа сообщения
+
+function showMessage (element, buttonClass) {
+  document.body.append(element);
+  element.querySelector(buttonClass).addEventListener('click', onCloseButtonClick);
+  document.addEventListener('keydown', onDocumentKeydownMessage);
+  document.body.addEventListener('click', onFreeZoneOfMessage);
+}
+
+// Функция скрытия сообщения
+
+function closeMessage () {
+  const existsElement = document.querySelector('.success') || document.querySelector('.error');
+  existsElement.remove();
+  document.removeEventListener('keydown', onDocumentKeydownMessage);
+  document.body.removeEventListener('click', onFreeZoneOfMessage);
+}
+
+// Проверка, что нажата кнопка закрыть сообщения
+
+function onCloseButtonClick () {
+  closeMessage();
+}
+
+// Проверка, нажатия произвольной области вне сообщения об успешной загрузке фотографии  или сообщения об ошибке
+
+function onFreeZoneOfMessage (evt) {
+  if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
+    return;
+  }
+  closeMessage();
+}
+
+// Проверка, нажатия кнопки эскейп при открытом сообщении об ошибке
+
+function onDocumentKeydownMessage (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    buttonClose.click();
+    closeMessage();
   }
 }
+
+// Блокировка кнопки отправить при публикации
+
+function blockSubmitButton () {
+  buttonSubmit.disabled = true;
+  buttonSubmit.textContent = SubmitButtonText.SENDING;
+}
+
+// Разблокировка кнопки отправить
+
+function unblockSubmitButton () {
+  buttonSubmit.disabled = false;
+  buttonSubmit.textContent = SubmitButtonText.IDLE;
+}
+
+// export {setUserFormSubmit};

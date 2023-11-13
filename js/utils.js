@@ -1,3 +1,5 @@
+import {ErrorText} from './api.js';
+
 // Функция генерации случайного числа от min до max
 
 const getRandomInteger = (min, max) => {
@@ -83,4 +85,19 @@ const checkEndMeeting = (startDay, finishDay, startMeeting, meetingDuration) => 
   return finishMeetingMinutes <= finishDayMinutes && finishMeetingMinutes >= startDayMinutes;
 };
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, checkEndMeeting};
+// Функция показа ошибки при загрузке данных
+
+const uploadErrorMessageTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+const REMOVE_UPLOAD_MESSAGE_TIMEOUT = 5000;
+
+const showUploadErrorMessage = () => {
+  const uploadErrorMessage = uploadErrorMessageTemplate.cloneNode(true);
+  uploadErrorMessage.textContent = ErrorText.GET_DATA;
+  document.body.append(uploadErrorMessage);
+
+  setTimeout(() => {
+    uploadErrorMessage.remove();
+  }, REMOVE_UPLOAD_MESSAGE_TIMEOUT);
+};
+
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, checkEndMeeting, showUploadErrorMessage};
