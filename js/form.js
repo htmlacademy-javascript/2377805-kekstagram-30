@@ -26,12 +26,13 @@ const sendForm = (formElement) => {
   sendFormData(formData)
     .then(() => {
       onUploadModalClose();
-      unblockSubmitButton();
       showSuccess();
     })
     .catch(() => {
-      unblockSubmitButton();
       showError();
+    })
+    .finally(() => {
+      unblockSubmitButton();
     });
 };
 
