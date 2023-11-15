@@ -3,19 +3,33 @@ import {onFormValidate, resetFormValid, hashtagElements, commentElement} from '.
 import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
 import {sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const fieldUploadImages = pictureList.querySelector('.img-upload');
 const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
 const fieldCreateDescription = pictureList.querySelector('.img-upload__overlay');
-// const imagePreview = pictureList.querySelector('.img-upload__preview > img');
+const imagePreview = pictureList.querySelector('.img-upload__preview > img');
 const buttonClose = pictureList.querySelector('.img-upload__cancel');
 const imageText = pictureList.querySelector('.img-upload__text');
 
 const imageForm = document.querySelector('.img-upload__form');
 
+// Функция добавления изображения пользователя
+
+const addPhoto = () => {
+  const file = imageUpload.files[0];
+  const fileName = file.name.toLowerCase();
+  if (FILE_TYPES.some((value) => fileName.endsWith(value))) {
+    imagePreview.src = URL.createObjectURL(file);
+  }
+};
+
 // Обработчик изменения в поле инпута с загрузкой нового изображения
 
 imageUpload.addEventListener('change', (evt) => {
   evt.preventDefault();
+  addPhoto();
+
   fieldCreateDescription.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
