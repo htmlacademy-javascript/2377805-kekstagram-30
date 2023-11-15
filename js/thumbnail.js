@@ -23,9 +23,18 @@ const createThumbnail = ({url, description, likes, comments}) => {
   return newThumbnail;
 };
 
+// Функция удаления блока миниатюр
+
+const clearThumbnails = () => {
+  while (pictureList.querySelector('.picture')) {
+    pictureList.querySelector('.picture').remove();
+  }
+};
+
 // Функция создания блока миниатюр и добавление в список
 
 const createThumbnails = (descriptions) => {
+  clearThumbnails();
   descriptions.forEach((description) => {
     const newThumbnail = createThumbnail(description);
     thumbnailFragment.appendChild(newThumbnail);
