@@ -9,6 +9,7 @@ const fieldUploadImages = pictureList.querySelector('.img-upload');
 const imageUpload = fieldUploadImages.querySelector('.img-upload__input');
 const fieldCreateDescription = pictureList.querySelector('.img-upload__overlay');
 const imagePreview = pictureList.querySelector('.img-upload__preview > img');
+const effectsImages = pictureList.querySelectorAll('.effects__preview');
 const buttonClose = pictureList.querySelector('.img-upload__cancel');
 const imageText = pictureList.querySelector('.img-upload__text');
 
@@ -21,6 +22,9 @@ const addPhoto = () => {
   const fileName = file.name.toLowerCase();
   if (FILE_TYPES.some((value) => fileName.endsWith(value))) {
     imagePreview.src = URL.createObjectURL(file);
+    effectsImages.forEach((effect) => {
+      effect.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+    });
   }
 };
 
