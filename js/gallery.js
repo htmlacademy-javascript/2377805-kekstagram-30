@@ -43,7 +43,7 @@ function createRandomPhotos (picturesData) {
     updatePictures.push(picturesData[uniqId()]);
   }
   return updatePictures;
-};
+}
 
 // Функция сортировки от самых популярных к менее популярным
 
@@ -53,6 +53,6 @@ function createDiscussedPhotos (picturesData) {
   const updatePictures = picturesData.slice();
   updatePictures.sort(sortDiscussedPhotos);
   return updatePictures;
-};
+}
 
 export {initGalleryFilters};
