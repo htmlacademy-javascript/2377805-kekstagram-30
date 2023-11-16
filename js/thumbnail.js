@@ -1,4 +1,5 @@
 import {openBigPicture} from './full-picture.js';
+import {debounce} from './utils.js';
 
 // Создание шаблона разметки изображения
 
@@ -46,4 +47,8 @@ const createThumbnails = (descriptions) => {
   pictureList.appendChild(thumbnailFragment);
 };
 
-export {createThumbnails, pictureList};
+// Функция создания блока миниатюр с debounce
+
+const createDebouncedThumbnails = debounce(createThumbnails,500);
+
+export {createThumbnails, pictureList, createDebouncedThumbnails};

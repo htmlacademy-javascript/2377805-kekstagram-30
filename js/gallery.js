@@ -1,76 +1,58 @@
 import {createRandomIdFromRangeGenerator} from './utils.js';
+import {createDebouncedThumbnails} from './thumbnail.js';
 
 const galleryFilters = document.querySelector('.img-filters');
 const formButtons = document.querySelector('.img-filters__form');
 const galleryButtons = document.querySelectorAll('.img-filters__button');
-const galleryButtonDefault = document.querySelector('#filter-default');
-const galleryButtonRandom = document.querySelector('#filter-random');
-const galleryButtonDiscussed = document.querySelector('#filter-discussed');
+
+let pictures = [];
 
 // Функция показа фильтров для галереи
 
-const showGalleryFilters = () => {
+const initGalleryFilters = (data) => {
   galleryFilters.classList.remove('img-filters--inactive');
+  formButtons.addEventListener('click', handleButton);
+  pictures = data.slice();
 };
 
 // Функция переключения активной кнопки
 
-const onActiveButton = (evt) => {
+function handleButton (evt) {
+  const currentButton = evt.target;
   galleryButtons.forEach((value) => {
     if (value.classList.contains('img-filters__button--active')) {
       value.classList.remove('img-filters__button--active');
     }
   });
-  evt.target.classList.add('img-filters__button--active');
-};
-
-// Функция для фильтрации по дефолту
-
-const setDefaultGalleryFilter = (callback) => {
-  galleryButtonDefault.addEventListener('click', () => {
-    callback();
-  });
-};
-
-// Функция для фильтрации рандомно
-
-const setRandomGalleryFilter = (callback) => {
-  galleryButtonRandom.addEventListener('click', () => {
-    callback();
-  });
-};
+  currentButton.classList.add('img-filters__button--active');
+  if (currentButton['id'] === 'filter-default') {
+    createDebouncedThumbnails(pictures);
+  } else if (currentButton['id'] === 'filter-random') {
+    createDebouncedThumbnails(createRandomPhotos(pictures));
+  } else if (currentButton['id'] === 'filter-discussed') {
+    createDebouncedThumbnails(createDiscussedPhotos(pictures));
+  }
+}
 
 // Функция генерации рандомных фото
 
-const createRandomPhotos = (pictures) => {
+function createRandomPhotos (picturesData) {
   const updatePictures = [];
-  const uniqId = createRandomIdFromRangeGenerator(0, pictures.length - 1);
+  const uniqId = createRandomIdFromRangeGenerator(0, picturesData.length - 1);
   for (let i = 0; i < 10; i++) {
-    updatePictures.push(pictures[uniqId()]);
+    updatePictures.push(picturesData[uniqId()]);
   }
   return updatePictures;
-};
-
-// Функция для фильтрации от самых популярных к менее популярным
-
-const setDiscussedGalleryFilter = (callback) => {
-  galleryButtonDiscussed.addEventListener('click', () => {
-    callback();
-  });
 };
 
 // Функция сортировки от самых популярных к менее популярным
 
 const sortDiscussedPhotos = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
-const createDiscussedPhotos = (pictures) => {
-  const updatePictures = pictures.slice();
+function createDiscussedPhotos (picturesData) {
+  const updatePictures = picturesData.slice();
   updatePictures.sort(sortDiscussedPhotos);
   return updatePictures;
 };
 
-// Добавление обработчика события нажатия на фильтр галереи
-
-formButtons.addEventListener('click', onActiveButton);
-
-export {showGalleryFilters, setDefaultGalleryFilter, setRandomGalleryFilter, setDiscussedGalleryFilter, createRandomPhotos, createDiscussedPhotos};
+export {initGalleryFilters};

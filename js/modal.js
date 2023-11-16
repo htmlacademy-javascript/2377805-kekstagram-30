@@ -1,4 +1,6 @@
 import {pictureList} from './thumbnail.js';
+import {createSlider} from './range-effects.js';
+import {addSubmitForm} from './form.js';
 import {onFormValidate, resetFormValid, hashtagElements, commentElement} from './pristine.js';
 import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
 import {sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
@@ -30,21 +32,26 @@ const addPhoto = () => {
 
 // Обработчик изменения в поле инпута с загрузкой нового изображения
 
-imageUpload.addEventListener('change', (evt) => {
-  evt.preventDefault();
-  addPhoto();
+const initModal = () => {
+  imageUpload.addEventListener('change', (evt) => {
+    evt.preventDefault();
+    addPhoto();
 
-  fieldCreateDescription.classList.remove('hidden');
-  document.body.classList.add('modal-open');
+    fieldCreateDescription.classList.remove('hidden');
+    document.body.classList.add('modal-open');
 
-  document.addEventListener('keydown', onDocumentKeydown);
-  buttonClose.addEventListener('click', onUploadModalClose);
-  fieldZoom.addEventListener('click', onZoomChange);
-  sliderElement.noUiSlider.on('update', onUpdateSliderValue); // Обработчик события изменения положения слайдера
-  effectsList.addEventListener('click', onEffectClick);
-  hashtagElements.addEventListener('blur', onFormValidate);
-  commentElement.addEventListener('blur', onFormValidate);
-});
+    document.addEventListener('keydown', onDocumentKeydown);
+    buttonClose.addEventListener('click', onUploadModalClose);
+    fieldZoom.addEventListener('click', onZoomChange);
+    sliderElement.noUiSlider.on('update', onUpdateSliderValue); // Обработчик события изменения положения слайдера
+    effectsList.addEventListener('click', onEffectClick);
+    hashtagElements.addEventListener('blur', onFormValidate);
+    commentElement.addEventListener('blur', onFormValidate);
+  });
+  createSlider();
+  addSubmitForm();
+};
+
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
 
@@ -83,4 +90,4 @@ function onDocumentKeydown (evt) {
   }
 }
 
-export {onUploadModalClose};
+export {onUploadModalClose, initModal};

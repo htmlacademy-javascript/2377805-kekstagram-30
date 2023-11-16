@@ -17,4 +17,4 @@ const getPicturesData = () => load(ROUTE.GET_DATA);
 
 const sendFormData = (body) => load(ROUTE.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
 
-export {getPicturesData, sendFormData, ErrorText};
+export {getPicturesData, sendFormData};
