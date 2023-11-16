@@ -62,10 +62,6 @@ const onFormSubmit = (evt) => {
   sendForm(evt.target);
 };
 
-// Обработчик события отправки формы
-
-imageForm.addEventListener('submit', onFormSubmit);
-
 // Функция показа успешного сообщения
 
 function showSuccess () {
@@ -134,4 +130,10 @@ function unblockSubmitButton () {
   buttonSubmit.textContent = SubmitButtonText.IDLE;
 }
 
-// export {setUserFormSubmit};
+// Обработчик события отправки формы
+
+const addSubmitForm = () => {
+  imageForm.addEventListener('submit', onFormSubmit);
+};
+
+export {addSubmitForm};

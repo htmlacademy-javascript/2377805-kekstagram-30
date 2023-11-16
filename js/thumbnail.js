@@ -1,4 +1,5 @@
 import {openBigPicture} from './full-picture.js';
+import {debounce} from './utils.js';
 
 // Создание шаблона разметки изображения
 
@@ -23,9 +24,18 @@ const createThumbnail = ({url, description, likes, comments}) => {
   return newThumbnail;
 };
 
+// Функция удаления блока миниатюр
+
+const clearThumbnails = () => {
+  while (pictureList.querySelector('.picture')) {
+    pictureList.querySelector('.picture').remove();
+  }
+};
+
 // Функция создания блока миниатюр и добавление в список
 
 const createThumbnails = (descriptions) => {
+  clearThumbnails();
   descriptions.forEach((description) => {
     const newThumbnail = createThumbnail(description);
     thumbnailFragment.appendChild(newThumbnail);
@@ -37,4 +47,8 @@ const createThumbnails = (descriptions) => {
   pictureList.appendChild(thumbnailFragment);
 };
 
-export {createThumbnails, pictureList};
+// Функция создания блока миниатюр с debounce
+
+const createDebouncedThumbnails = debounce(createThumbnails,500);
+
+export {createThumbnails, pictureList, createDebouncedThumbnails};

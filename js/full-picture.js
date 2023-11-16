@@ -57,11 +57,6 @@ const onMoreCommentsShow = () => {
   checkMaxComments();
 };
 
-// Обработчик событий показать больше комментариев
-
-buttonMoreComments.addEventListener('click', onMoreCommentsShow);
-
-
 /* Вариант номер два для функционала загрузки комментариев, очень запутанный с точки зрения написания функции,
 но зато добавляет и удаляет обработчик нажатия на кнопку "загрузить еще"
 и не отрисовывает сразу весь список комментариев */
@@ -158,12 +153,6 @@ function onDocumentKeydown (evt) {
   }
 }
 
-// Обработчик события нажатия на кнопку закрыть
-
-buttonClose.addEventListener('click', () => {
-  closeBigPicture();
-});
-
 // Проверка нажатия поля вне большого изображения
 
 function onFreeZone (evt) {
@@ -173,10 +162,20 @@ function onFreeZone (evt) {
   }
 }
 
+// Обработчик событий показать больше комментариев
+
+buttonMoreComments.addEventListener('click', onMoreCommentsShow);
+
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
 
 bigPicture.querySelector('.social__footer-text').addEventListener('keydown', (evt) => {
   evt.stopPropagation();
+});
+
+// Обработчик события нажатия на кнопку закрыть
+
+buttonClose.addEventListener('click', () => {
+  closeBigPicture();
 });
 
 export {openBigPicture};
