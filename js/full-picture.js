@@ -1,3 +1,5 @@
+const COMMENTS_STEP = 5;
+
 const bigPicture = document.querySelector('.big-picture'); // Блок большого изображения (ББИ)
 const bigPictureImg = document.querySelector('.big-picture__img > img'); // Фото в ББИ
 const likesCounter = bigPicture.querySelector('.likes-count'); // Счетчик лайков
@@ -23,7 +25,7 @@ const createCommentsList = (comments) => {
     newComment.querySelector('.social__text').textContent = message;
     commentsList.append(newComment);
     showedCommentsCounter += 1;
-    if (counter >= 5) {
+    if (counter >= COMMENTS_STEP) {
       newComment.classList.add('hidden');
       showedCommentsCounter -= 1;
     }
@@ -47,7 +49,7 @@ const onMoreCommentsClick = () => {
 
   let counter = 0;
   hiddenComments.forEach ((comment) => {
-    if (counter < 5) {
+    if (counter < COMMENTS_STEP) {
       comment.classList.remove('hidden');
       counter += 1;
       showedCommentsCounter += 1;
