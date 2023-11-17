@@ -1,6 +1,6 @@
 import {pristine} from './pristine.js';
 import {sendFormData} from './api.js';
-import {onUploadModalClose} from './modal.js';
+import {onModalClose} from './modal.js';
 
 
 const imageForm = document.querySelector('.img-upload__form');
@@ -25,7 +25,7 @@ const sendForm = (formElement) => {
   const formData = new FormData(formElement);
   sendFormData(formData)
     .then(() => {
-      onUploadModalClose();
+      onModalClose();
       showSuccess();
     })
     .catch(() => {
@@ -35,25 +35,6 @@ const sendForm = (formElement) => {
       unblockSubmitButton();
     });
 };
-
-// Альтернативная функция через async и await
-
-// const sendForm = async (formElement) => {
-//   if (!pristine.validate()) {
-//     return;
-//   }
-
-//   try {
-//     blockSubmitButton();
-//     await sendFormData(new FormData(formElement));
-//     onUploadModalClose();
-//     unblockSubmitButton();
-//     showSuccess();
-//   } catch {
-//     unblockSubmitButton();
-//     showError();
-//   }
-// };
 
 // Функция обработчик события отправки формы
 
@@ -79,8 +60,8 @@ function showError () {
 function showMessage (element, buttonClass) {
   document.body.append(element);
   element.querySelector(buttonClass).addEventListener('click', onCloseButtonClick);
-  document.addEventListener('keydown', onDocumentKeydownMessage);
-  document.body.addEventListener('click', onFreeZoneOfMessage);
+  document.addEventListener('keydown', onMessagePressEscape);
+  document.body.addEventListener('click', onOutOfMessageClick);
 }
 
 // Функция скрытия сообщения
@@ -88,8 +69,8 @@ function showMessage (element, buttonClass) {
 function closeMessage () {
   const existsElement = document.querySelector('.success') || document.querySelector('.error');
   existsElement.remove();
-  document.removeEventListener('keydown', onDocumentKeydownMessage);
-  document.body.removeEventListener('click', onFreeZoneOfMessage);
+  document.removeEventListener('keydown', onMessagePressEscape);
+  document.body.removeEventListener('click', onOutOfMessageClick);
 }
 
 // Проверка, что нажата кнопка закрыть сообщения
@@ -100,7 +81,7 @@ function onCloseButtonClick () {
 
 // Проверка, нажатия произвольной области вне сообщения об успешной загрузке фотографии  или сообщения об ошибке
 
-function onFreeZoneOfMessage (evt) {
+function onOutOfMessageClick (evt) {
   if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
     return;
   }
@@ -109,7 +90,7 @@ function onFreeZoneOfMessage (evt) {
 
 // Проверка, нажатия кнопки эскейп при открытом сообщении об ошибке
 
-function onDocumentKeydownMessage (evt) {
+function onMessagePressEscape (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeMessage();

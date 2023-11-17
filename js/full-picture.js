@@ -42,7 +42,7 @@ const checkMaxComments = () => {
 
 // Функция показа больше комментариев
 
-const onMoreCommentsShow = () => {
+const onMoreCommentsClick = () => {
   const hiddenComments = commentsList.querySelectorAll('.hidden');
 
   let counter = 0;
@@ -56,64 +56,6 @@ const onMoreCommentsShow = () => {
   showedComments.textContent = showedCommentsCounter;
   checkMaxComments();
 };
-
-/* Вариант номер два для функционала загрузки комментариев, очень запутанный с точки зрения написания функции,
-но зато добавляет и удаляет обработчик нажатия на кнопку "загрузить еще"
-и не отрисовывает сразу весь список комментариев */
-
-// const createComment = ({avatar, name, message}) => {
-//   const comment = commentTemplate.cloneNode(true);
-//   comment.querySelector('.social__picture').src = avatar;
-//   comment.querySelector('.social__picture').alt = name;
-//   comment.querySelector('.social__text').textContent = message;
-//   return comment;
-// };
-
-// const createCommentsList = (comments) => {
-//   let showedCommentsCounter = 0;
-//   showedCommentsCounter += 5;
-//   const fragment = document.createDocumentFragment();
-
-//   const onMoreCommentsShow = () => { //определение колбэка для клика на "загрузить еще"
-//     commentsList.innerHTML = '';
-//     showedCommentsCounter += 5;
-//     if (showedCommentsCounter < comments.length) {
-//       showedComments.textContent = showedCommentsCounter;
-//       comments.slice(0,showedCommentsCounter).forEach((item) => {
-//         const newComment = createComment(item);
-//         fragment.append(newComment);
-//       });
-//       commentsList.append(fragment);
-//     } else {
-//       showedComments.textContent = comments.length;
-//       buttonMoreComments.classList.add('hidden');
-//       comments.slice(0,comments.length).forEach((item) => {
-//         const newComment = createComment(item);
-//         fragment.append(newComment);
-//       });
-//       commentsList.append(fragment);
-//       buttonMoreComments.removeEventListener('click', onMoreCommentsShow);
-//     }
-//   };
-
-//   if (showedCommentsCounter >= comments.length) {
-//     buttonMoreComments.classList.add('hidden');
-//     showedComments.textContent = comments.length;
-//     comments.slice(0,comments.length).forEach((item) => {
-//       const newComment = createComment(item);
-//       fragment.append(newComment);
-//     });
-//     commentsList.append(fragment);
-//   } else {
-//     buttonMoreComments.addEventListener('click', onMoreCommentsShow);
-//     showedComments.textContent = showedCommentsCounter;
-//     comments.slice(0,showedCommentsCounter).forEach((item) => {
-//       const newComment = createComment(item);
-//       fragment.append(newComment);
-//     });
-//     commentsList.append(fragment);
-//   }
-// };
 
 // Функция при открытии большого изображения
 
@@ -129,7 +71,7 @@ const openBigPicture = (miniphoto) => {
   checkMaxComments(); // для варианта 2 это не требуется
 
   document.addEventListener('keydown', onDocumentKeydown);
-  bigPicture.addEventListener('click', onFreeZone);
+  bigPicture.addEventListener('click', onOutOfPictureClick);
 };
 
 // Функция закрытия большого изображения
@@ -141,7 +83,7 @@ const closeBigPicture = () => {
   commentsList.innerHTML = '';
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  bigPicture.removeEventListener('click', onFreeZone);
+  bigPicture.removeEventListener('click', onOutOfPictureClick);
 };
 
 // Проверка если клавиша ESC нажата
@@ -155,7 +97,7 @@ function onDocumentKeydown (evt) {
 
 // Проверка нажатия поля вне большого изображения
 
-function onFreeZone (evt) {
+function onOutOfPictureClick (evt) {
   if (!evt.target.closest('.big-picture__preview')) {
     evt.preventDefault();
     closeBigPicture();
@@ -164,7 +106,7 @@ function onFreeZone (evt) {
 
 // Обработчик событий показать больше комментариев
 
-buttonMoreComments.addEventListener('click', onMoreCommentsShow);
+buttonMoreComments.addEventListener('click', onMoreCommentsClick);
 
 // Обработчик событий предотвращающий всплытие из заполняемых и меняемых полей
 
