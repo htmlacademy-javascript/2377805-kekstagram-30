@@ -87,7 +87,7 @@ pristine.addValidator(
 
 const buttonSubmit = uploadForm.querySelector('.img-upload__submit');
 
-const onFormValidate = () => {
+const onFormFieldBlur = () => {
   buttonSubmit.disabled = !pristine.validate();
 };
 
@@ -95,4 +95,4 @@ const onFormValidate = () => {
 
 const resetFormValid = () => pristine.reset();
 
-export {onFormValidate, resetFormValid, hashtagElements, commentElement, pristine};
+export {onFormFieldBlur, resetFormValid, hashtagElements, commentElement, pristine};

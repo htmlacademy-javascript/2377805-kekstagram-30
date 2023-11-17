@@ -94,7 +94,7 @@ const changeEffectValue = (value) => {
 
 // Функция при изменении положения слайдера
 
-const onUpdateSliderValue = () => {
+const onSliderChange = () => {
   const currentValue = sliderElement.noUiSlider.get();
   valueElement.value = currentValue;
   changeEffectValue(currentValue);
@@ -115,4 +115,4 @@ const changeEffectToDefault = () => {
   currentEffect = EFFECTS[0];
 };
 
-export {createSlider, sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault};
+export {createSlider, sliderElement, onSliderChange, effectsList, onEffectClick, changeEffectToDefault};

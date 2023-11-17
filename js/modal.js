@@ -1,9 +1,9 @@
 import {pictureList} from './thumbnail.js';
 import {createSlider} from './range-effects.js';
 import {addSubmitForm} from './form.js';
-import {onFormValidate, resetFormValid, hashtagElements, commentElement} from './pristine.js';
-import {onZoomChange, resetScale, fieldZoom} from './zoom.js';
-import {sliderElement, onUpdateSliderValue, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
+import {onFormFieldBlur, resetFormValid, hashtagElements, commentElement} from './pristine.js';
+import {onZoomResize, resetScale, fieldZoom} from './zoom.js';
+import {sliderElement, onSliderChange, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -41,12 +41,12 @@ const initModal = () => {
     document.body.classList.add('modal-open');
 
     document.addEventListener('keydown', onDocumentKeydown);
-    buttonClose.addEventListener('click', onUploadModalClose);
-    fieldZoom.addEventListener('click', onZoomChange);
-    sliderElement.noUiSlider.on('update', onUpdateSliderValue); // Обработчик события изменения положения слайдера
+    buttonClose.addEventListener('click', onModalClose);
+    fieldZoom.addEventListener('click', onZoomResize);
+    sliderElement.noUiSlider.on('update', onSliderChange); // Обработчик события изменения положения слайдера
     effectsList.addEventListener('click', onEffectClick);
-    hashtagElements.addEventListener('blur', onFormValidate);
-    commentElement.addEventListener('blur', onFormValidate);
+    hashtagElements.addEventListener('blur', onFormFieldBlur);
+    commentElement.addEventListener('blur', onFormFieldBlur);
   });
   createSlider();
   addSubmitForm();
@@ -61,18 +61,18 @@ imageText.addEventListener('keydown', (evt) => {
 
 // Функция закрытия формы для загрузки изображения
 
-function onUploadModalClose () {
+function onModalClose () {
   imageUpload.value = '';
   fieldCreateDescription.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  buttonClose.removeEventListener('click', onUploadModalClose);
-  fieldZoom.removeEventListener('click', onZoomChange);
+  buttonClose.removeEventListener('click', onModalClose);
+  fieldZoom.removeEventListener('click', onZoomResize);
   sliderElement.noUiSlider.off('update');
   effectsList.removeEventListener('click', onEffectClick);
-  hashtagElements.removeEventListener('blur', onFormValidate);
-  commentElement.removeEventListener('blur', onFormValidate);
+  hashtagElements.removeEventListener('blur', onFormFieldBlur);
+  commentElement.removeEventListener('blur', onFormFieldBlur);
 
   resetFormValid();
   imageForm.reset();
@@ -86,8 +86,8 @@ function onDocumentKeydown (evt) {
   const isErrorExist = Boolean(document.querySelector('.error'));
   if (evt.key === 'Escape' && !isErrorExist) {
     evt.preventDefault();
-    onUploadModalClose();
+    onModalClose();
   }
 }
 
-export {onUploadModalClose, initModal};
+export {onModalClose, initModal};

@@ -11,20 +11,24 @@ let pictures = [];
 
 const initGalleryFilters = (data) => {
   galleryFilters.classList.remove('img-filters--inactive');
-  formButtons.addEventListener('click', handleButton);
+  formButtons.addEventListener('click', onFilterButtonClick);
   pictures = data.slice();
 };
 
 // Функция переключения активной кнопки
 
-function handleButton (evt) {
+function onFilterButtonClick (evt) {
+  if (!evt.target.classList.contains('img-filters__button')) {
+    return;
+  }
+
   const currentButton = evt.target;
-  galleryButtons.forEach((value) => {
-    if (value.classList.contains('img-filters__button--active')) {
-      value.classList.remove('img-filters__button--active');
-    }
+
+  galleryButtons.forEach((button) => {
+    button.classList.remove('img-filters__button--active');
   });
   currentButton.classList.add('img-filters__button--active');
+
   if (currentButton['id'] === 'filter-default') {
     createDebouncedThumbnails(pictures);
   } else if (currentButton['id'] === 'filter-random') {

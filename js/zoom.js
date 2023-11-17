@@ -1,5 +1,9 @@
 import {pictureList} from './thumbnail.js';
 
+const MAX_ZOOM = 100;
+const MIN_ZOOM = 25;
+const ZOOM_STEP = 25;
+
 const fieldZoom = document.querySelector('.img-upload__scale');
 const btnBigger = fieldZoom.querySelector('.scale__control--bigger');
 const btnSmaller = fieldZoom.querySelector('.scale__control--smaller');
@@ -10,15 +14,15 @@ let zoomValue = parseInt(zoomPercent.value.replace('%', ''), 10);
 
 // Функция при нажатии на кнопки зума
 
-const onZoomChange = (evt) => {
+const onZoomResize = (evt) => {
   evt.preventDefault();
   if (evt.target === btnBigger) {
-    if (zoomValue < 100) {
-      zoomValue += 25;
+    if (zoomValue < MAX_ZOOM) {
+      zoomValue += ZOOM_STEP;
     }
   } else if (evt.target === btnSmaller) {
-    if (zoomValue > 25) {
-      zoomValue -= 25;
+    if (zoomValue > MIN_ZOOM) {
+      zoomValue -= ZOOM_STEP;
     }
   }
   zoomPercent.value = `${zoomValue}%`;
@@ -26,9 +30,9 @@ const onZoomChange = (evt) => {
 };
 
 const resetScale = () => {
-  imagePreview.style.transform = `scale(${1})`;
-  zoomPercent.value = '100%';
-  zoomValue = 100;
+  imagePreview.style.transform = `scale(${MAX_ZOOM / 100})`;
+  zoomPercent.value = `${MAX_ZOOM}%`;
+  zoomValue = MAX_ZOOM;
 };
 
-export {onZoomChange, resetScale, fieldZoom};
+export {onZoomResize, resetScale, fieldZoom};
