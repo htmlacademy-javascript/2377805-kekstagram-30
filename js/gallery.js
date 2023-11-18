@@ -25,9 +25,8 @@ function onFilterButtonClick (evt) {
   const currentButton = evt.target;
 
   galleryButtons.forEach((button) => {
-    button.classList.remove('img-filters__button--active');
+    button.classList.toggle('img-filters__button--active', button === currentButton);
   });
-  currentButton.classList.add('img-filters__button--active');
 
   if (currentButton['id'] === 'filter-default') {
     createDebouncedThumbnails(pictures);

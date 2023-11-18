@@ -1,6 +1,6 @@
 import {pristine} from './pristine.js';
 import {sendFormData} from './api.js';
-import {onModalClose} from './modal.js';
+import {onButtonModalCloseClick} from './modal.js';
 
 
 const imageForm = document.querySelector('.img-upload__form');
@@ -25,7 +25,7 @@ const sendForm = (formElement) => {
   const formData = new FormData(formElement);
   sendFormData(formData)
     .then(() => {
-      onModalClose();
+      onButtonModalCloseClick();
       showSuccess();
     })
     .catch(() => {
@@ -60,8 +60,8 @@ function showError () {
 function showMessage (element, buttonClass) {
   document.body.append(element);
   element.querySelector(buttonClass).addEventListener('click', onCloseButtonClick);
-  document.addEventListener('keydown', onMessagePressEscape);
-  document.body.addEventListener('click', onOutOfMessageClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  document.body.addEventListener('click', onDocumentClick);
 }
 
 // Функция скрытия сообщения
@@ -69,8 +69,8 @@ function showMessage (element, buttonClass) {
 function closeMessage () {
   const existsElement = document.querySelector('.success') || document.querySelector('.error');
   existsElement.remove();
-  document.removeEventListener('keydown', onMessagePressEscape);
-  document.body.removeEventListener('click', onOutOfMessageClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.removeEventListener('click', onDocumentClick);
 }
 
 // Проверка, что нажата кнопка закрыть сообщения
@@ -81,7 +81,7 @@ function onCloseButtonClick () {
 
 // Проверка, нажатия произвольной области вне сообщения об успешной загрузке фотографии  или сообщения об ошибке
 
-function onOutOfMessageClick (evt) {
+function onDocumentClick (evt) {
   if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
     return;
   }
@@ -90,7 +90,7 @@ function onOutOfMessageClick (evt) {
 
 // Проверка, нажатия кнопки эскейп при открытом сообщении об ошибке
 
-function onMessagePressEscape (evt) {
+function onDocumentKeydown (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeMessage();
