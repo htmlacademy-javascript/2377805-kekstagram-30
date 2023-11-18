@@ -2,8 +2,8 @@ import {pictureList} from './thumbnail.js';
 import {createSlider} from './range-effects.js';
 import {addSubmitForm} from './form.js';
 import {onFormFieldBlur, resetFormValid, hashtagElements, commentElement} from './pristine.js';
-import {onZoomResize, resetScale, fieldZoom} from './zoom.js';
-import {sliderElement, onSliderChange, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
+import {onZoomClick, resetScale, fieldZoom} from './zoom.js';
+import {sliderElement, onSliderUpdate, effectsList, onEffectClick, changeEffectToDefault} from './range-effects.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -41,9 +41,9 @@ const initModal = () => {
     document.body.classList.add('modal-open');
 
     document.addEventListener('keydown', onDocumentKeydown);
-    buttonClose.addEventListener('click', onModalClose);
-    fieldZoom.addEventListener('click', onZoomResize);
-    sliderElement.noUiSlider.on('update', onSliderChange); // Обработчик события изменения положения слайдера
+    buttonClose.addEventListener('click', onButtonModalCloseClick);
+    fieldZoom.addEventListener('click', onZoomClick);
+    sliderElement.noUiSlider.on('update', onSliderUpdate); // Обработчик события изменения положения слайдера
     effectsList.addEventListener('click', onEffectClick);
     hashtagElements.addEventListener('blur', onFormFieldBlur);
     commentElement.addEventListener('blur', onFormFieldBlur);
@@ -61,14 +61,14 @@ imageText.addEventListener('keydown', (evt) => {
 
 // Функция закрытия формы для загрузки изображения
 
-function onModalClose () {
+function onButtonModalCloseClick () {
   imageUpload.value = '';
   fieldCreateDescription.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  buttonClose.removeEventListener('click', onModalClose);
-  fieldZoom.removeEventListener('click', onZoomResize);
+  buttonClose.removeEventListener('click', onButtonModalCloseClick);
+  fieldZoom.removeEventListener('click', onZoomClick);
   sliderElement.noUiSlider.off('update');
   effectsList.removeEventListener('click', onEffectClick);
   hashtagElements.removeEventListener('blur', onFormFieldBlur);
@@ -86,8 +86,8 @@ function onDocumentKeydown (evt) {
   const isErrorExist = Boolean(document.querySelector('.error'));
   if (evt.key === 'Escape' && !isErrorExist) {
     evt.preventDefault();
-    onModalClose();
+    onButtonModalCloseClick();
   }
 }
 
-export {onModalClose, initModal};
+export {onButtonModalCloseClick, initModal};
